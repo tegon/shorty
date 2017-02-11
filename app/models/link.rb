@@ -27,7 +27,7 @@ class Link < Sequel::Model
   private
 
   def generate_random_shortcode
-    SecureRandom.urlsafe_base64(4)
+    SecureRandom.hex(3)
   end
 
   def generate_unique_shortcode
