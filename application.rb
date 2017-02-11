@@ -10,11 +10,16 @@ class Shorty < Sinatra::Application
     @request_payload = Oj.load(body) if body
   end
 
-  get '/' do
-    Oj.dump({})
-  end
+  post '/shorten' do
+    link = Link.new(@request_payload)
 
-  post '/' do
-    Oj.dump(@request_payload)
+    if link.valid? && link.save
+      status 201
+      Oj.dump('shortcode' => link.shortcode)
+    else
+      halt 400 if link.errors.include?(:url)
+      halt 409 if link.errors.include?(:shortcode) && link.errors[:shortcode].include?('is already taken')
+      halt 422 if link.errors.include?(:shortcode)
+    end
   end
 end
