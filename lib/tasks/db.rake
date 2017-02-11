@@ -5,13 +5,13 @@ namespace :db do
   end
 
   desc "Creates the database from DATABASE_NAME environment variable"
-  task :create do
+  task create: :dotenv do
     %x( createdb -E UTF8 -T template0 #{ENV['DATABASE_NAME']} )
     puts "Database #{ENV['DATABASE_NAME']} created successfully"
   end
 
   desc "Drops the database from DATABASE_URL environment variable"
-  task :drop do
+  task drop: :dotenv do
     %x( dropdb #{ENV['DATABASE_NAME']} )
     puts "Database #{ENV['DATABASE_NAME']} dropped successfully"
   end
