@@ -21,12 +21,6 @@ class LinkTest < MiniTest::Test
     assert_equal false, link.valid?
   end
 
-  def test_that_url_is_unique
-    Link.create(url: 'http://twitter.com', shortcode: 'twitte')
-    link = Link.new(url: 'http://twitter.com', shortcode: 'twitta')
-    assert_equal false, link.valid?
-  end
-
   def test_that_shortcode_cant_be_nil
     link = Link.new(url: 'http://google.com', shortcode: nil)
     assert_equal false, link.valid?

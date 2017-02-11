@@ -6,7 +6,7 @@ class Link < Sequel::Model
 
   def validate
     super
-    validates_unique :url, :shortcode
+    validates_unique :shortcode
     validates_format URI::Parser.new.make_regexp, :url
     validates_format /^[0-9a-zA-Z_]{4,}$/, :shortcode
   end
