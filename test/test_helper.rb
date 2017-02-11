@@ -3,7 +3,6 @@ ENV['RACK_ENV'] = 'test'
 require 'bundler'
 
 Bundler.require(:default, :test)
-Dotenv.load('.env.test')
 
 require File.expand_path('../../config/environment', __FILE__)
 require 'rack/test'
