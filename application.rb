@@ -22,4 +22,15 @@ class Shorty < Sinatra::Application
       halt 422 if link.errors.include?(:shortcode)
     end
   end
+
+  get '/:shortcode' do
+    link = Link.where(shortcode: params[:shortcode]).first
+
+    if link.nil?
+      halt 404
+    else
+      Click.create(link_id: link.id)
+      redirect to(link.url)
+    end
+  end
 end
