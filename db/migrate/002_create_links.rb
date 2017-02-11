@@ -5,7 +5,7 @@ Sequel.migration do
       timestamptz  :created_at, default: Sequel.function(:now), null: false
       timestamptz  :updated_at, default: Sequel.function(:now), null: false
       String       :url, null: false
-      String       :shortcode, size: 6, null: false
+      String       :shortcode, null: false
       index :shortcode, unique: true
     end
   end
