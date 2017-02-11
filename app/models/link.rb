@@ -12,7 +12,7 @@ class Link < Sequel::Model
   end
 
   def before_validation
-    self.shortcode ||= generate_random_shortcode
+    generate_unique_shortcode
     super
   end
 
@@ -28,5 +28,16 @@ class Link < Sequel::Model
 
   def generate_random_shortcode
     SecureRandom.urlsafe_base64(4)
+  end
+
+  def generate_unique_shortcode
+    return unless shortcode.nil? || shortcode.empty?
+    new_shortcode = generate_random_shortcode
+
+    until Link.where(shortcode: new_shortcode).first.nil? do
+      new_shortcode = generate_random_shortcode
+    end
+
+    self.shortcode ||= generate_random_shortcode
   end
 end
