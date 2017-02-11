@@ -8,6 +8,8 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rack/test'
 require 'minitest/autorun'
 
+require File.expand_path('../../application', __FILE__)
+
 def app
   Shorty.new
 end
