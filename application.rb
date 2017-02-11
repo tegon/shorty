@@ -33,4 +33,18 @@ class Shorty < Sinatra::Application
       redirect to(link.url)
     end
   end
+
+  get '/:shortcode/stats' do
+    link = Link.where(shortcode: params[:shortcode]).first
+
+    if link.nil?
+      halt 404
+    else
+      Oj.dump({
+        'startDate' => link.start_date,
+        'lastSeenDate' => link.last_seen_date,
+        'redirectCount' => link.clicks.count
+      })
+    end
+  end
 end

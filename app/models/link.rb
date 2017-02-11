@@ -16,6 +16,14 @@ class Link < Sequel::Model
     super
   end
 
+  def start_date
+    created_at.iso8601
+  end
+
+  def last_seen_date
+    clicks.last.created_at.iso8601 unless clicks.empty?
+  end
+
   private
 
   def generate_random_shortcode
