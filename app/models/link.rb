@@ -2,6 +2,8 @@ class Link < Sequel::Model
   plugin :timestamps, update_on_create: true
   plugin :validation_helpers
 
+  one_to_many :clicks
+
   def validate
     super
     validates_unique :url, :shortcode
