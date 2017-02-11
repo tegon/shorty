@@ -8,6 +8,6 @@ class Link < Sequel::Model
     super
     validates_unique :url, :shortcode
     validates_format URI::Parser.new.make_regexp, :url
-    validates_format /^[0-9a-zA-Z_]{6}$/, :shortcode
+    validates_format /^[0-9a-zA-Z_]{4,}$/, :shortcode
   end
 end
