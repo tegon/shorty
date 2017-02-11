@@ -1,0 +1,11 @@
+class Link < Sequel::Model
+  plugin :timestamps, update_on_create: true
+  plugin :validation_helpers
+
+  def validate
+    super
+    validates_unique :url, :shortcode
+    validates_format URI::Parser.new.make_regexp, :url
+    validates_format /^[0-9a-zA-Z_]{6}$/, :shortcode
+  end
+end
