@@ -21,9 +21,10 @@ class LinkTest < MiniTest::Test
     assert_equal false, link.valid?
   end
 
-  def test_that_shortcode_cant_be_nil
-    link = Link.new(url: 'http://google.com', shortcode: nil)
-    assert_equal false, link.valid?
+  def test_that_generates_a_random_shortcode
+    link = Link.new(url: 'http://google.com')
+    assert_equal true, link.valid?
+    assert_equal 6, link.shortcode.length
   end
 
   def test_that_shortcode_cant_be_blank
