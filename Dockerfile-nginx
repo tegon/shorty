@@ -1,0 +1,17 @@
+FROM nginx
+
+MAINTAINER Leonardo Tegon <ltegon93@gmail.com>
+
+RUN apt-get update -qq && apt-get -y install apache2-utils
+
+ENV APP_ROOT /shorty
+
+WORKDIR $APP_ROOT
+
+RUN mkdir log
+
+COPY config/nginx.conf /tmp/shorty.nginx
+
+RUN envsubst '$APP_ROOT' < /tmp/shorty.nginx > /etc/nginx/conf.d/default.conf
+
+CMD [ "nginx", "-g", "daemon off;" ]

@@ -3,79 +3,41 @@ Shorty
 
 Simple URL shortener microservice powered by Sinatra and PostgreSQL.
 
-## Install on Ubuntu 14.04
-
-First install git:
-```bash
-sudo apt-get install --assume-yes git
-```
+## Install
 
 First clone the repository:
 ```bash
 git clone https://github.com/tegon/shorty.git
 ```
 
-Install `rvm` and `ruby 2.4.0`:
-```bash
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
-\curl -sSL https://get.rvm.io | bash
-source ~/.rvm/scripts/rvm
-rvm install ruby-2.4.0
-```
-
-Install `postgresql`:
-```bash
-sudo apt-get update
-sudo apt-get install --assume-yes postgresql postgresql-contrib
-```
-
-Crete a user and set a password:
-```bash
-sudo -u postgres createuser --superuser $USER
-sudo -u postgres psql
-\password $USER # Change $USER to current user (e.g. ubuntu)
-```
-
-Update the `.env` file with the new credentials:
-```bash
-vim .env
-DATABASE_USERNAME=ubuntu
-DATABASE_PASSWORD=password
-```
-
-Install required packages to build our gems:
-```bash
-sudo apt-get install --assume-yes libpq-dev build-essential
-```
-
-Inside the application directory, install the dependencies running:
+Inside the application directory, build the Docker images running:
 ```bash
 cd shorty
-gem install bundler
-bundle install
+docker-compose build
 ```
 
-Create the database and run the migrations:
+Create and start the containers:
 ```bash
-rake db:create db:migrate
+docker-compose up -d
 ```
 
-The first time you run the tests, you need to setup the database:
+We need to restart the containers because the `app` container will fail to start until the database is created:
 ```bash
-RACK_ENV=test rake db:setup
+docker-compose restart
 ```
+You might have to wait a minute before doing this.
 
-You can run the tests using:
+Run the database migrations:
 ```bash
-rake test
+docker-compose run app rake db:migrate
 ```
 
-Start the application running:
+Restart (again) because `Sequel` needs to read the database schema on initialize:
 ```bash
-puma config.ru
+docker-compose restart
 ```
 
-You can access the application now at: [http://localhost:9292](http://localhost:9292)
+You can access the application now at: [http://localhost](http://localhost)
 
 -------------------------------------------------------------------------
 

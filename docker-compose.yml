@@ -1,0 +1,27 @@
+version: '2'
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-database
+    env_file: .env
+  app:
+    build: .
+    volumes:
+      - .:/shorty
+    env_file: .env
+    environment:
+      RACK_ENV: $RACK_ENV
+    ports:
+      - "9292"
+    depends_on:
+      - db
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+    env_file: .env
